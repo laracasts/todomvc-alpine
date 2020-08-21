@@ -1,104 +1,102 @@
 window.todoStore = {
-	todos: JSON.parse(localStorage.getItem('todo-store') || '[]'),
+    todos: JSON.parse(localStorage.getItem('todo-store') || '[]'),
 
-	save() {
-		localStorage.setItem('todo-store', JSON.stringify(this.todos));
-	}
+    save() {
+        localStorage.setItem('todo-store', JSON.stringify(this.todos));
+    },
 };
 
 window.todos = function () {
-	return {
-		...todoStore,
-		filter: 'all',
-		newTodo: '',
-		editedTodo: null,
+    return {
+        ...todoStore,
+        filter: 'all',
+        newTodo: '',
+        editedTodo: null,
 
-		get active() {
-			return this.todos.filter(todo => ! todo.completed);
-		},
+        get active() {
+            return this.todos.filter((todo) => !todo.completed);
+        },
 
-		get completed() {
-			return this.todos.filter(todo => todo.completed);
-		},
+        get completed() {
+            return this.todos.filter((todo) => todo.completed);
+        },
 
-		get filteredTodos() {
-			return {
-				all: this.todos,
-				active: this.active,
-				completed: this.completed
-			}[this.filter];
-		},
+        get filteredTodos() {
+            return {
+                all: this.todos,
+                active: this.active,
+                completed: this.completed,
+            }[this.filter];
+        },
 
-		get allComplete() {
-			return this.todos.length === this.completed.length;
-		},
+        get allComplete() {
+            return this.todos.length === this.completed.length;
+        },
 
-		addTodo() {
-			if (! this.newTodo) return;
+        addTodo() {
+            if (!this.newTodo) return;
 
-			this.todos.push({
-				id: Date.now(),
-				body: this.newTodo,
-				completed: false
-			});
+            this.todos.push({
+                id: Date.now(),
+                body: this.newTodo,
+                completed: false,
+            });
 
-			this.save();
+            this.save();
 
-			this.newTodo = '';
-		},
+            this.newTodo = '';
+        },
 
-		editTodo(todo) {
-			todo.cachedBody = todo.body;
+        editTodo(todo) {
+            todo.cachedBody = todo.body;
 
-			this.editedTodo = todo;
-		},
+            this.editedTodo = todo;
+        },
 
-		cancelEdit(todo) {
-			todo.body = todo.cachedBody;
+        cancelEdit(todo) {
+            todo.body = todo.cachedBody;
 
-			this.editedTodo = null;
+            this.editedTodo = null;
 
-			delete todo.cachedBody;
-		},
+            delete todo.cachedBody;
+        },
 
-		editComplete(todo) {
-			if (todo.body.trim() === '') {
-				return this.deleteTodo(todo);
-			}
+        editComplete(todo) {
+            if (todo.body.trim() === '') {
+                return this.deleteTodo(todo);
+            }
 
-			this.editedTodo = null;
+            this.editedTodo = null;
 
-			this.save();
-		},
+            this.save();
+        },
 
-		deleteTodo(todo) {
-			let position = this.todos.indexOf(todo);
+        deleteTodo(todo) {
+            let position = this.todos.indexOf(todo);
 
-			this.todos.splice(position, 1);
+            this.todos.splice(position, 1);
 
-			this.save();
-		},
+            this.save();
+        },
 
-		toggleTodoCompletion(todo) {
-			todo.completed = ! todo.completed;
+        toggleTodoCompletion(todo) {
+            todo.completed = !todo.completed;
 
-			this.save();
-		},
+            this.save();
+        },
 
-		toggleAllComplete() {
-			let allComplete = this.allComplete;
+        toggleAllComplete() {
+            let allComplete = this.allComplete;
 
-			this.todos.forEach(
-				todo => todo.completed = ! allComplete
-			);
+            this.todos.forEach((todo) => (todo.completed = !allComplete));
 
-			this.save();
-		},
+            this.save();
+        },
 
-		clearCompletedTodos() {
-			this.todos = this.active;
+        clearCompletedTodos() {
+            this.todos = this.active;
 
-			this.save();
-		}
-	};
-}
+            this.save();
+        },
+    };
+};

@@ -1,146 +1,151 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport"
-		  content="width=device-width, initial-scale=1"
-	>
-	<title>Template • TodoMVC</title>
-	<link rel="stylesheet"
-		  href="node_modules/todomvc-common/base.css"
-	>
-	<link rel="stylesheet"
-		  href="node_modules/todomvc-app-css/index.css"
-	>
-	<link rel="stylesheet"
-		  href="css/app.css"
-	>
-	<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
-			defer
-	></script>
-</head>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<body>
-	<section
-		x-data="todos()"
-		class="todoapp"
-	>
-		<header class="header">
-			<h1>todos</h1>
+        <title>Template • TodoMVC</title>
 
-			<input x-model="newTodo"
-				   @keyup.enter="addTodo"
-				   class="new-todo"
-				   placeholder="What needs to be done?"
-				   autofocus
-			>
-		</header>
+        <link rel="stylesheet" href="node_modules/todomvc-common/base.css" />
+        <link rel="stylesheet" href="node_modules/todomvc-app-css/index.css" />
+        <link rel="stylesheet" href="css/app.css" />
 
-		<section class="main"
-				 x-show="todos.length"
-		>
-			<input x-model="allComplete"
-				   @click="toggleAllComplete"
-				   id="toggle-all"
-				   class="toggle-all"
-				   type="checkbox"
-			>
-			<label for="toggle-all">Mark all as complete</label>
+        <script
+            src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+            defer
+        ></script>
+    </head>
 
-			<ul class="todo-list">
-				<template x-for="todo in filteredTodos"
-						  :key="todo.id"
-				>
-					<li :class="{
-							editing: todo === editedTodo,
-							completed: todo.completed
-						}"
-					>
-						<div class="view">
-							<input x-model="todo.completed"
-								   @click="toggleTodoCompletion(todo)"
-								   class="toggle"
-								   type="checkbox"
-							>
+    <body>
+        <section x-data="todos()" class="todoapp">
+            <header class="header">
+                <h1>todos</h1>
 
-							<label
-								x-text="todo.body"
-								@dblclick="editTodo(todo)"
-							></label>
+                <input
+                    x-model="newTodo"
+                    @keyup.enter="addTodo"
+                    class="new-todo"
+                    placeholder="What needs to be done?"
+                    autofocus
+                />
+            </header>
 
-							<button @click="deleteTodo(todo)"
-									class="destroy"
-							></button>
-						</div>
+            <section class="main" x-show="todos.length">
+                <input
+                    x-model="allComplete"
+                    @click="toggleAllComplete"
+                    id="toggle-all"
+                    class="toggle-all"
+                    type="checkbox"
+                />
 
-						<input
-							x-model="todo.body"
-							@keyup.enter="editComplete(todo)"
-							@keyup.escape="cancelEdit(todo)"
-							class="edit"
-						>
-					</li>
-				</template>
-			</ul>
-		</section>
+                <label for="toggle-all">Mark all as complete</label>
 
-		<footer class="footer"
-				x-show="todos.length"
-		>
-			<span class="todo-count">
-				<strong x-text="active.length"></strong>
-				<span x-text="active.length === 1 ? 'item' : 'items'"></span> left
-			</span>
+                <ul class="todo-list">
+                    <template x-for="todo in filteredTodos" :key="todo.id">
+                        <li
+                            :class="{
+                                editing: todo === editedTodo,
+                                completed: todo.completed
+                            }"
+                        >
+                            <div class="view">
+                                <input
+                                    x-model="todo.completed"
+                                    @click="toggleTodoCompletion(todo)"
+                                    class="toggle"
+                                    type="checkbox"
+                                />
 
-			<ul class="filters">
-				<li>
-					<a @click.prevent="filter = 'all'"
-					   :class="{ selected: filter === 'all' }"
-					   href="#/"
-					>All
-					</a>
-				</li>
+                                <label
+                                    x-text="todo.body"
+                                    @dblclick="editTodo(todo)"
+                                ></label>
 
-				<li>
-					<a @click.prevent="filter = 'active'"
-					   :class="{ selected: filter === 'active' }"
-					   href="#/active"
-					>Active
-					</a>
-				</li>
+                                <button
+                                    @click="deleteTodo(todo)"
+                                    class="destroy"
+                                ></button>
+                            </div>
 
-				<li>
-					<a @click.prevent="filter = 'completed'"
-					   :class="{ selected: filter === 'completed' }"
-					   href="#/completed"
-					>Completed
-					</a>
-				</li>
-			</ul>
+                            <input
+                                x-model="todo.body"
+                                @keyup.enter="editComplete(todo)"
+                                @keyup.escape="cancelEdit(todo)"
+                                class="edit"
+                            />
+                        </li>
+                    </template>
+                </ul>
+            </section>
 
-			<button
-				x-show="completed.length"
-				@click="clearCompletedTodos"
-				class="clear-completed"
-			>
-				Clear completed
-			</button>
-		</footer>
-	</section>
+            <footer class="footer" x-show="todos.length">
+                <span class="todo-count">
+                    <strong x-text="active.length"></strong>
+                    <span
+                        x-text="active.length === 1 ? 'item' : 'items'"
+                    ></span>
+                    left
+                </span>
 
-	<footer class="info">
-		<p>Double-click to edit a todo</p>
-		<!-- Change this out with your name and url ↓ -->
-		<p>Created by
-			<a href="https://laracasts.com">Jeffrey Way</a>
-		</p>
-		<p>Part of
-			<a href="http://todomvc.com">TodoMVC</a>
-		</p>
-	</footer>
-	<!-- Scripts here. Don't remove ↓ -->
-	<script src="node_modules/todomvc-common/base.js"></script>
-	<script src="js/app.js"></script>
-	<script src="js/todos.js"></script>
-</body>
+                <ul class="filters">
+                    <li>
+                        <a
+                            @click.prevent="filter = 'all'"
+                            :class="{ selected: filter === 'all' }"
+                            href="#/"
+                        >
+                            All
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            @click.prevent="filter = 'active'"
+                            :class="{ selected: filter === 'active' }"
+                            href="#/active"
+                        >
+                            Active
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            @click.prevent="filter = 'completed'"
+                            :class="{ selected: filter === 'completed' }"
+                            href="#/completed"
+                        >
+                            Completed
+                        </a>
+                    </li>
+                </ul>
+
+                <button
+                    x-show="completed.length"
+                    @click="clearCompletedTodos"
+                    class="clear-completed"
+                >
+                    Clear completed
+                </button>
+            </footer>
+        </section>
+
+        <footer class="info">
+            <p>Double-click to edit a todo</p>
+
+            <p>
+                Created by
+                <a href="https://laracasts.com">Jeffrey Way</a>
+            </p>
+
+            <p>
+                Part of
+                <a href="http://todomvc.com">TodoMVC</a>
+            </p>
+        </footer>
+
+        <!-- Scripts here. Don't remove ↓ -->
+        <script src="node_modules/todomvc-common/base.js"></script>
+        <script src="js/todos.js"></script>
+    </body>
 </html>
