@@ -22,11 +22,7 @@ window.todos = function () {
         },
 
         get filteredTodos() {
-            return {
-                all: this.todos,
-                active: this.active,
-                completed: this.completed,
-            }[this.filter];
+            return this[this.filter];
         },
 
         get allComplete() {
